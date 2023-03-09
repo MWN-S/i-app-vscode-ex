@@ -1,0 +1,531 @@
+{
+	"name": "i-app Programming Language",
+	"version": "0.0.1",
+	"fileTypes": [
+		"app"
+	],
+	"scopeName": "source.app",
+
+	"foldingStartMarker": "\\{\\s*$",
+	"foldingStopMarker": "^\\s*\\}",
+
+	"patterns": [
+		{
+			"name": "meta.preprocessor.script.i-app",
+			"match": "^(#!.*)$"
+		},
+		{
+			"name": "meta.declaration.i-app",
+			"begin": "^\\w*\\b(library|import|part of|part|export)\\b",
+			"beginCaptures": {
+				"0": {
+					"name": "keyword.other.import.i-app"
+				}
+			},
+			"end": ";",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.terminator.i-app"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#strings"
+				},
+				{
+					"include": "#comments"
+				},
+				{
+					"name": "keyword.other.import.i-app",
+					"match": "\\b(as|show|hide)\\b"
+				},
+				{
+					"name": "keyword.control.i-app",
+					"match": "\\b(if)\\b"
+				}
+			]
+		},
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#punctuation"
+		},
+		{
+			"include": "#annotations"
+		},
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#constants-and-special-vars"
+		},
+		{
+			"include": "#operators"
+		},
+		{
+			"include": "#strings"
+		}
+	],
+
+	"repository": {
+		"i-appdoc": {
+			"patterns": [
+				{
+					"match": "(\\[.*?\\])",
+					"captures": {
+						"0": {
+							"name": "variable.name.source.i-app"
+						}
+					}
+				},
+				{
+					"match": "^ {4,}(?![ \\*]).*",
+					"captures": {
+						"0": {
+							"name": "variable.name.source.i-app"
+						}
+					}
+				},
+				{
+					"contentName": "variable.other.source.i-app",
+					"begin": "```.*?$",
+					"end": "```"
+				},
+				{
+					"match": "(`.*?`)",
+					"captures": {
+						"0": {
+							"name": "variable.other.source.i-app"
+						}
+					}
+				},
+				{
+					"match": "(`.*?`)",
+					"captures": {
+						"0": {
+							"name": "variable.other.source.i-app"
+						}
+					}
+				},
+				{
+					"match": "(\\* ((    ).*))$",
+					"captures": {
+						"2": {
+							"name": "variable.other.source.i-app"
+						}
+					}
+				}
+			]
+		},
+		"comments": {
+			"patterns": [
+				{
+					"name": "comment.block.empty.i-app",
+					"match": "/\\*\\*/",
+					"captures": {
+						"0": {
+							"name": "punctuation.definition.comment.i-app"
+						}
+					}
+				},
+				{
+					"include": "#comments-doc-oldschool"
+				},
+				{
+					"include": "#comments-doc"
+				},
+				{
+					"include": "#comments-inline"
+				}
+			]
+		},
+		"comments-doc-oldschool": {
+			"patterns": [
+				{
+					"name": "comment.block.documentation.i-app",
+					"begin": "/\\*\\*",
+					"end": "\\*/",
+					"patterns": [
+						{
+							"include": "#comments-doc-oldschool"
+						},
+						{
+							"include": "#comments-block"
+						},
+						{
+							"include": "#i-appdoc"
+						}
+					]
+				}
+			]
+		},
+		"comments-doc": {
+			"patterns": [
+				{
+					"name": "comment.block.documentation.i-app",
+					"begin": "///",
+					"while": "^\\s*///",
+					"patterns": [
+						{
+							"include": "#i-appdoc"
+						}
+					]
+				}
+			]
+		},
+		"comments-inline": {
+			"patterns": [
+				{
+					"include": "#comments-block"
+				},
+				{
+					"match": "((//).*)$",
+					"captures": {
+						"1": {
+							"name": "comment.line.double-slash.i-app"
+						}
+					}
+				}
+			]
+		},
+		"comments-block": {
+			"patterns": [
+				{
+					"name": "comment.block.i-app",
+					"begin": "/\\*",
+					"end": "\\*/",
+					"patterns": [
+						{
+							"include": "#comments-block"
+						}
+					]
+				}
+			]
+		},
+		"annotations": {
+			"patterns": [
+				{
+					"name": "storage.type.annotation.i-app",
+					"match": "@[a-zA-Z]+"
+				}
+			]
+		},
+		"constants-and-special-vars": {
+			"patterns": [
+				{
+					"name": "constant.language.i-app",
+					"match": "(?<!\\$)\\b(true|false|null)\\b(?!\\$)"
+				},
+				{
+					"name": "variable.language.i-app",
+					"match": "(?<!\\$)\\b(this|super)\\b(?!\\$)"
+				},
+				{
+					"name": "constant.numeric.i-app",
+					"match": "(?<!\\$)\\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((e|E)(\\+|-)?[0-9]+)?)\\b(?!\\$)"
+				},
+				{
+					"include": "#class-identifier"
+				},
+				{
+					"include": "#function-identifier"
+				}
+
+			]
+		},
+		"class-identifier": {
+			"patterns": [
+				{
+					"match": "(?<!\\$)\\b(bool|num|int|double|dynamic)\\b(?!\\$)",
+					"name": "support.class.i-app"
+				},
+				{
+					"match": "(?<!\\$)\\bvoid\\b(?!\\$)",
+					"name": "storage.type.primitive.i-app"
+				},
+				{
+					"begin": "(?<![a-zA-Z0-9_$])([_$]*[A-Z][a-zA-Z0-9_$]*)\\b",
+					"end": "(?!<)",
+					"beginCaptures": {
+						"1": {
+							"name": "support.class.i-app"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#type-args"
+						}
+					]
+				}
+			]
+		},
+		"function-identifier": {
+			"patterns": [
+				{
+					"match": "([_$]*[a-z][a-zA-Z0-9_$]*)(<(?:[a-zA-Z0-9_$<>?]|,\\s*|\\s+extends\\s+)+>)?[!?]?\\(",
+					"captures": {
+						"1": {
+							"name": "entity.name.function.i-app"
+						},
+						"2": {
+							"patterns": [
+								{
+									"include": "#type-args"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		"type-args": {
+			"begin": "(<)",
+			"end": "(>)",
+			"beginCaptures": {
+				"1": {
+					"name": "other.source.i-app"
+				}
+			},
+			"endCaptures": {
+				"1": {
+					"name": "other.source.i-app"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#class-identifier"
+				},
+				{
+					"match": ","
+				},
+				{
+					"name": "keyword.declaration.i-app",
+					"match": "extends"
+				}
+			]
+		},
+		"keywords": {
+			"patterns": [
+				{
+					"name": "keyword.cast.i-app",
+					"match": "(?<!\\$)\\bas\\b(?!\\$)"
+				},
+				{
+					"name": "keyword.control.catch-exception.i-app",
+					"match": "(?<!\\$)\\b(try|on|catch|finally|throw|rethrow)\\b(?!\\$)"
+				},
+				{
+					"name": "keyword.control.i-app",
+					"match": "(?<!\\$)\\b(break|case|continue|default|do|else|for|if|in|return|switch|while|when)\\b(?!\\$)"
+				},
+				{
+					"name": "keyword.control.i-app",
+					"match": "(?<!\\$)\\b(sync(\\*)?|async(\\*)?|await|yield(\\*)?)\\b(?!\\$)"
+				},
+				{
+					"name": "keyword.control.i-app",
+					"match": "(?<!\\$)\\bassert\\b(?!\\$)"
+				},
+				{
+					"name": "keyword.control.new.i-app",
+					"match": "(?<!\\$)\\b(new)\\b(?!\\$)"
+				},
+				{
+					"name": "keyword.declaration.i-app",
+					"match": "(?<!\\$)\\b(abstract|sealed|base|interface|class|enum|extends|extension|external|factory|implements|get(?!\\()|mixin|native|operator|set(?!\\()|typedef|with|covariant)\\b(?!\\$)"
+				},
+				{
+					"name": "storage.modifier.i-app",
+					"match": "(?<!\\$)\\b(static|final|const|required|late)\\b(?!\\$)"
+				},
+				{
+					"name": "storage.type.primitive.i-app",
+					"match": "(?<!\\$)\\b(?:void|var)\\b(?!\\$)"
+				}
+			]
+		},
+		"operators": {
+			"patterns": [
+				{
+					"name": "keyword.operator.i-app",
+					"match": "(?<!\\$)\\b(is\\!?)\\b(?!\\$)"
+				},
+				{
+					"name": "keyword.operator.ternary.i-app",
+					"match": "\\?|:"
+				},
+				{
+					"name": "keyword.operator.bitwise.i-app",
+					"match": "(<<|>>>?|~|\\^|\\||&)"
+				},
+				{
+					"name": "keyword.operator.assignment.bitwise.i-app",
+					"match": "((&|\\^|\\||<<|>>>?)=)"
+				},
+				{
+					"name": "keyword.operator.closure.i-app",
+					"match": "(=>)"
+				},
+				{
+					"name": "keyword.operator.comparison.i-app",
+					"match": "(==|!=|<=?|>=?)"
+				},
+				{
+					"name": "keyword.operator.assignment.arithmetic.i-app",
+					"match": "(([+*/%-]|\\~)=)"
+				},
+				{
+					"name": "keyword.operator.assignment.i-app",
+					"match": "(=)"
+				},
+				{
+					"name": "keyword.operator.increment-decrement.i-app",
+					"match": "(\\-\\-|\\+\\+)"
+				},
+				{
+					"name": "keyword.operator.arithmetic.i-app",
+					"match": "(\\-|\\+|\\*|\\/|\\~\\/|%)"
+				},
+				{
+					"name": "keyword.operator.logical.i-app",
+					"match": "(!|&&|\\|\\|)"
+				}
+			]
+		},
+		"string-interp": {
+			"patterns": [
+				{
+					"match": "\\$([a-zA-Z0-9_]+)",
+					"captures": {
+						"1": {
+							"name": "variable.parameter.i-app"
+						}
+					}
+				},
+				{
+					"name": "string.interpolated.expression.i-app",
+					"begin": "\\$\\{",
+					"end": "\\}",
+					"patterns": [
+						{
+							"include": "#constants-and-special-vars",
+							"name": "variable.parameter.i-app"
+						},
+						{
+							"include": "#strings"
+						},
+						{
+							"name": "variable.parameter.i-app",
+							"match": "[a-zA-Z0-9_]+"
+						}
+					]
+				},
+				{
+					"name": "constant.character.escape.i-app",
+					"match": "\\\\."
+				}
+			]
+		},
+		"strings": {
+			"patterns": [
+				{
+					"name": "string.interpolated.triple.double.i-app",
+					"begin": "(?<!r)\"\"\"",
+					"end": "\"\"\"(?!\")",
+					"patterns": [
+						{
+							"include": "#string-interp"
+						}
+					]
+				},
+				{
+					"name": "string.interpolated.triple.single.i-app",
+					"begin": "(?<!r)'''",
+					"end": "'''(?!')",
+					"patterns": [
+						{
+							"include": "#string-interp"
+						}
+					]
+				},
+				{
+					"name": "string.quoted.triple.double.i-app",
+					"begin": "r\"\"\"",
+					"end": "\"\"\"(?!\")"
+				},
+				{
+					"name": "string.quoted.triple.single.i-app",
+					"begin": "r'''",
+					"end": "'''(?!')"
+				},
+				{
+					"name": "string.interpolated.double.i-app",
+					"begin": "(?<!\\|r)\"",
+					"end": "\"",
+					"patterns": [
+						{
+							"name": "invalid.string.newline",
+							"match": "\\n"
+						},
+						{
+							"include": "#string-interp"
+						}
+					]
+				},
+				{
+					"name": "string.quoted.double.i-app",
+					"begin": "r\"",
+					"end": "\"",
+					"patterns": [
+						{
+							"name": "invalid.string.newline",
+							"match": "\\n"
+						}
+					]
+				},
+				{
+					"name": "string.interpolated.single.i-app",
+					"begin": "(?<!\\|r)'",
+					"end": "'",
+					"patterns": [
+						{
+							"name": "invalid.string.newline",
+							"match": "\\n"
+						},
+						{
+							"include": "#string-interp"
+						}
+					]
+				},
+				{
+					"name": "string.quoted.single.i-app",
+					"begin": "r'",
+					"end": "'",
+					"patterns": [
+						{
+							"name": "invalid.string.newline",
+							"match": "\\n"
+						}
+					]
+				}
+			]
+		},
+		"punctuation": {
+			"patterns": [
+				{
+					"name": "punctuation.comma.i-app",
+					"match": ","
+				},
+				{
+					"name": "punctuation.terminator.i-app",
+					"match": ";"
+				},
+				{
+					"name": "punctuation.dot.i-app",
+					"match": "\\."
+				}
+			]
+		}
+	}
+}

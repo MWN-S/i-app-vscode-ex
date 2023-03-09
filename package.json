@@ -1,0 +1,33 @@
+{
+  "name": "i-app",
+  "displayName": "i-app",
+  "description": "i-app Programming Language",
+  "version": "0.0.1",
+  "publisher": "i-app",
+  "engines": {
+    "vscode": "^1.76.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+	"homepage": "https://i-app.org/",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/MWN-S/i-app-vscode-ex"
+	},
+  "contributes": {
+    "languages": [{
+      "id": "i-app",
+      "aliases": ["i-app Programming Language", "i-app"],
+      "extensions": [".app"],
+      "configuration": "./language-configuration.json",
+      "icon": {"light": "./icon/i.png","dark": "./icon/i-app.gif"}
+
+      }],
+    "grammars": [{
+      "language": "i-app",
+      "scopeName": "source.app",
+      "path": "./syntaxes/i-app.tmLanguage.json"
+    }]
+  }
+}
