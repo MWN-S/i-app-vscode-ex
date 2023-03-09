@@ -2,11 +2,12 @@
   "name": "i-app",
   "displayName": "i-app",
   "description": "i-app Programming Language",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "publisher": "i-app",
   "engines": {
     "vscode": "^1.50.0"
   },
+  "icon": "./icon/i-app.png",
   "categories": [
     "Programming Languages"
   ],
