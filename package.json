@@ -21,7 +21,7 @@
       "aliases": ["i-app Programming Language", "i-app"],
       "extensions": [".app"],
       "configuration": "./language-configuration.json",
-      "icon": {"light": "./icon/i.png","dark": "./icon/i-app.gif"}
+      "icon": {"light": "./icon/i-app.gif","dark": "./icon/i-app.gif"}
 
       }],
     "grammars": [{
